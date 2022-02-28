@@ -1,0 +1,41 @@
+{% extends 'home_base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-12">
+            <div class="card shadow mb-8">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">People Nearby</h6>
+
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <form method="POST">
+                        {% for m in msg['people'] %}
+                        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+                            <input type="hidden" name="person_email" value="{{m['email']}}"/>
+                            <a class="navbar-brand mx-3" href="">{{m['firstName']}} {{m['lastName']}}</a>
+                            <ul class="navbar-nav ml-auto">
+                                <div class="dropdown mb-4">
+                                    <label for="group">Invite to Group</label>
+                                    <select class="dropdown-toggle" name="group" id="group">
+                                        <option class="dropdown-item" value=""></option>
+                                        {% for g in m['groups'] %}
+                                        <option  value="{{g['gName']}}">{{g['gName']}}</option>
+                                        {%endfor%}
+                                    </select>
+                                </div>
+                                <button type="submit" name='b' class="btn btn-primary"
+                                    role="button"
+                                            aria-expanded="false"> Confirm </button
+                            </ul>
+                        </nav>
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

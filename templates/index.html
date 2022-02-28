@@ -1,0 +1,311 @@
+
+{% extends 'home_base.html' %}
+{% block content %}
+
+<script>
+    let map;
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: {lat: 33.7756, lng: -84.3963},
+            zoom: 16,
+        });
+        new google.maps.Marker({
+            position: {lat: 33.7755, lng: -84.3963},
+            map,
+        });
+        var image =
+            "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+
+        var l = {{ msg['lid'] | tojson }};
+
+        console.log(l)
+        for (i = 0; i < l.length; i++) {
+
+            var marker = new google.maps.Marker({
+                position: {lat: parseFloat(l[i]['latitude']), lng: parseFloat(l[i]['longitude'])},
+                map,
+                icon: image,
+            })
+            addInfoWindow(marker, l[i]['eventDescription'], l[i]['eventDate'], l[i]['gName'])
+        }
+
+    }
+
+        function addInfoWindow(marker, event, date, group) {
+        var msg = '<div><span class="font-weight-bold">Group: </span>' +group+'</div><div><span class="font-weight-bold">Event: </span>'+event+'</div>' +
+            '<div><span class="font-weight-bold">Date: </span>'+date+'</div> ' +
+            '<button onclick="joinEvent()">join</button>';
+
+
+        var infoWindow = new google.maps.InfoWindow({
+            content: msg
+        });
+
+        google.maps.event.addListener(marker, 'click', function () {
+            infoWindow.open(map, marker);
+        });
+    }
+
+    function joinEvent(){
+
+    }
+  </script>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+
+                        <div class="col-xl-4 col-md-8 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                People nearby</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">34</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="far fa-address-book fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-8 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2" onclick="location.href='join_group';" style="cursor: pointer;">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Groups nearby</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ msg['g_c'] }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-city fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Pending Requests Card Example -->
+                        <div class="col-xl-4 col-md-8 mb-4" >
+                            <div class="card border-left-warning shadow h-100 py-2" onclick="location.href='pending_request';" style="cursor: pointer;">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" >
+                                                Pending Requests</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ msg['pending_num'] }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+
+                    <div class="row">
+
+                        <!-- Area Chart -->
+
+                        <div class="col-12 col-12">
+                            <div class="card shadow mb-8">
+
+    <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Map</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <!-- <p>There should be a map</p> -->
+                                        <div id="map"></div>
+
+                                            <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+                                           <script
+                                            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7IlsD3NvyZqJ1ZUSeaUJZfitvxMbp3wU&callback=initMap&libraries=&v=weekly"
+                                                    async
+                                            ></script>
+                                        <canvas ></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        <!-- Pie Chart -->
+<!--                        <div class="col-xl-4 col-lg-5">-->
+<!--                            <div class="card shadow mb-4">-->
+<!--                                &lt;!&ndash; Card Header - Dropdown &ndash;&gt;-->
+<!--                                <div-->
+<!--                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">-->
+<!--                                    <h6 class="m-0 font-weight-bold text-primary">Groups</h6>-->
+<!--                                    <div class="dropdown no-arrow">-->
+<!--                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"-->
+<!--                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>-->
+<!--                                        </a>-->
+<!--                                        <div class="dropdown-menu dropdown-menu-right shadow animated&#45;&#45;fade-in"-->
+<!--                                            aria-labelledby="dropdownMenuLink">-->
+<!--                                            <div class="dropdown-header">Dropdown Header:</div>-->
+<!--                                            <a class="dropdown-item" href="#">Action</a>-->
+<!--                                            <a class="dropdown-item" href="#">Another action</a>-->
+<!--                                            <div class="dropdown-divider"></div>-->
+<!--                                            <a class="dropdown-item" href="#">Something else here</a>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                <!-- Card Body -->
+<!--                                <div class="card-body">-->
+<!--                                    <div class="chart-pie pt-4 pb-2">-->
+<!--                                        <canvas id="myPieChart"></canvas>-->
+<!--                                    </div>-->
+<!--                                    <div class="mt-4 text-center small">-->
+<!--                                        <span class="mr-2">-->
+<!--                                            <i class="fas fa-circle text-primary"></i> Study-->
+<!--                                        </span>-->
+<!--                                        <span class="mr-2">-->
+<!--                                            <i class="fas fa-circle text-success"></i> Outdoors-->
+<!--                                        </span>-->
+<!--                                        <span class="mr-2">-->
+<!--                                            <i class="fas fa-circle text-info"></i> board games-->
+<!--                                        </span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Content Column -->
+                        <div class="col-lg-12 mb-4">
+
+                            <!-- Project Card Example -->
+                        <form method="post">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Groups You Might Want to Join</h6>
+                                </div>
+                                <div class="card-body py-3  ">
+                                    {%  for m in msg['result'] %}
+
+
+                                            <div class="card-header border-bottom-info py-3 d-flex justify-content-between">
+                                                <h6 class="m-0 font-weight-bold text-primary ">{{ m['gName'] }}</h6>
+                                                <h6 class="m-9 font-weight-bold text-primary ">Members Count: {{ m['num'] }}</h6>
+
+                                </div>
+
+                                            <div class="card-body py-3 d-flex justify-content-between">
+                                            <div class="text-info">{{ m['gDescription'] }}</div>
+                                            <button type="submit" name='b_home' value="{{ m['gName'] }}" onclick="notif()" class="btn btn-primary" href="{{url_for('home') }}"
+                                    role="button"
+                                            aria-expanded="false"> Join </button>
+
+
+                                            </div>
+                                            <script>
+
+                                            function notif() {
+                                                var b = document.getElementsByName('b_home');
+                                                alert("You have joined the group!");
+                                            }
+                                            </script>
+
+
+
+{#                                        <div class=" border-left-info card-body">{{ msg['d'][r] }}</div>#}
+{#                                        <div class="border-left-info card-body"> Current Number of Members{{ msg['d'][r] }}</div>#}
+
+
+                                    {%  endfor  %}
+                                </div>
+                            </div>
+                        </form>
+
+                        </div>
+
+                        </div>
+<!--                    </div>-->
+
+                </div>
+                <!-- /.container-fluid -->
+
+
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; 2021</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

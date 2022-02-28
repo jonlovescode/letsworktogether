@@ -1,0 +1,34 @@
+{% extends 'home_base.html' %}
+{% block content %}
+ <div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-12">
+            <div class="card shadow mb-8">
+
+                <!-- Card Body -->
+                <div class="card-body">
+                    {% if 'comment' not in msg %}
+                    <form  method="POST">
+                        <p>Please enter a valid address for your location! </p>
+                        <p>Example location: 1600 Amphitheatre Parkway, Mountain View, CA </p>
+                        <label>Convert Location to Lat/Long: </label>
+
+                        <input type="text" class="form-control form-control-user" id="user-location"
+                                                            placeholder="Enter your address" name ="user-location" required>
+    
+                
+                        <br>
+                        <button type= "submit" name="submit-button" value = "location-get" class="btn btn-primary btn-user btn-block ">
+                                                    Convert!
+                                                </button>
+                    </form>
+
+                    {% else %}
+                    <div>{{ msg['comment']}}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

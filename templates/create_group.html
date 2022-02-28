@@ -1,0 +1,36 @@
+{% extends 'home_base.html' %}
+{% block content %}
+ <div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-12">
+            <div class="card shadow mb-8">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Create Group</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    {% if 'comment' not in msg %}
+                    <form method="POST">
+                    <label>Group Name: </label>
+
+                    <input type="text" class="form-control form-control-user" id="gName"
+                                                        placeholder="Group Name" name="gName" required>
+                    <label>Group Description:</label>
+                    <textarea type="textarea" class="form-control form-control-user" id="password"
+                              placeholder="Description" name="description" required></textarea>
+            
+                    <br>
+                    <button type= "submit" class="btn btn-primary btn-user btn-block ">
+                                                Submit
+                                            </button>
+                    </form>
+                    {% else %}
+                    <div>{{ msg['comment']}}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'home_base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Welcome to Group {{msg['gName']}}</h1>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="card shadow mb-8">
+                
+
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Events</h6>
+
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    {% for m in msg['events'] %}
+                        <form method="post">
+                            
+                            <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+                                <a class="navbar-brand mx-3" href="#">{{m['eventDate']}}</a>
+                                <a class="navbar-brand mx-3" href="#">{{m['lID']}}</a>
+                                <a class="navbar-brand mx-3" href="#">{{m['eventDescription']}}</a>
+                                <input type="hidden" name="gName" value="{{m['eventDate']}}"/>
+                                <input type="hidden" name="gName" value="{{m['lID']}}"/>
+                                <input type="hidden" name="email" value="{{m['eventDescription']}}"/>
+                            </nav>
+                           
+                        </form>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="card shadow mb-8">
+                
+
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">People in same group</h6>
+
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    {% for m in msg['people'] %}
+                        <form>
+                            <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+                                <a class="navbar-brand mx-3" href="#">{{m['firstName']}}</a>
+                                <a class="navbar-brand mx-3" href="#">{{m['lastName']}}</a>
+                            </nav>  
+                        </form>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12 col-12">
+            <div class="card shadow mb-8">
+
+                <!-- Card Body -->
+                <div class="card-body">
+
+                    <form method="POST">
+                        <label for="eDate">Event date:</label>
+
+                        <input type="date" name="eDate"
+                               value="2021-01-01"
+                               min="2021-01-01" max="2030-12-31"><br>
+                        <label>Event Description:</label>
+                        <textarea type="textarea" class="form-control form-control-user" name="description"
+                            placeholder="Description" required></textarea>
+                        <!-- <label>Location Description: </label>
+                            <input type="text" class="form-control form-control-user" id="lName" placeholder="Location Description"
+                                name="gName" required> -->
+                        <br>
+                        <label for="lID">Choose a location:</label>
+
+                        <select name="lID">
+                            {% for m in msg['result'] %}
+                                <option value="{{m['lID']}}">{{m['lName']}}</option>
+                                {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-user btn-block ">
+                            Submit
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

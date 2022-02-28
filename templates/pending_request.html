@@ -1,0 +1,36 @@
+{% extends 'home_base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-12">
+            <div class="card shadow mb-8">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Pending Requests</h6>
+
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    {% for m in msg['result'] %}
+                    <form method="post">
+                        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+                            <a class="navbar-brand mx-3" href="#">{{m['gName']}}</a>
+                            <a class="navbar-brand mx-3" href="#">{{m['email']}}</a>
+                            <input type="hidden" name="gName" value="{{m['gName']}}"/>
+                            <input type="hidden" name="email" value="{{m['email']}}"/>
+                            <ul class="navbar-nav ml-auto">
+                                    <button type="submit" class="btn btn-success btn-circle" href="#" 
+                                    role="button" 
+                                        aria-expanded="false">
+                                        <i class="fas fa-check"></i>
+                            </button>
+                            </ul>
+                        </nav>
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

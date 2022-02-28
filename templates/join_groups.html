@@ -1,0 +1,48 @@
+{% extends 'home_base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-12">
+            <div class="card shadow mb-8">
+
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Groups nearby</h6>
+
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                <form method="post">
+                    {% for m in msg['result'] %}
+                    <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+                        <a type="" class="navbar-brand mx-3" href="#" name="a">{{m}}</a>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                {%  if m in msg['joined'] %}
+                                    <button class="btn btn-secondary " disabled="true" href="{{url_for('join_group') }}"
+                                    role="button"
+                                        aria-expanded="false">
+                                        Joined
+                                    </button>
+                                {%  else  %}
+                                    <button type="submit" name='b' value="{{ m }}" class="btn btn-primary" href="{{url_for('join_group') }}"
+                                    role="button"
+                                            aria-expanded="false"> Join </button>
+
+
+                                {%  endif %}
+                            </li>
+                        </ul>
+                    </nav>
+                    {% endfor %}
+</form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

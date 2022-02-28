@@ -1,0 +1,39 @@
+{% extends 'home_base.html' %}
+{% block content %}
+ <div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-12">
+            <div class="card shadow mb-8">
+
+                <!-- Card Body -->
+                <div class="card-body">
+                    {% if 'comment' not in msg %}
+                    <form  method="POST">
+                        <p>You can get your longtitude and latitude coordinates from Location -> Convert Location!</p>
+                    <label>Location Name: </label>
+
+                    <input type="text" class="form-control form-control-user" id="lName"
+                                                        placeholder="Location Name" name="lName" required>
+                        <label>Longitude: </label>
+
+                        <input type="text" class="form-control form-control-user" id="longitude"
+                               placeholder="Longitude" name="longitude" required>
+                        <label>Latitude: </label>
+
+                        <input type="text" class="form-control form-control-user" id="latitude"
+                               placeholder="Location Name" name="latitude" required>
+            
+                    <br>
+                    <button type= "submit" name = "submit-button"value = "location-post" class="btn btn-primary btn-user btn-block ">
+                                                Submit 
+                                            </button>
+                    </form>
+                    {% else %}
+                    <div>{{ msg['comment']}}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
